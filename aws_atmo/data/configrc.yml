@@ -1,0 +1,87 @@
+##########################################################################
+#
+# This section defines data version
+# If this section is omitted, then the package version number is used
+version:
+  NEXRAD_LEVEL3_VERSION    : v3_1
+  NEXRAD_LEVEL3_3D_VERSION : v3_1
+
+##########################################################################
+#
+## Defines default values for keywords across the package
+defaults:
+  region:                                 # Default domain for binning
+   - 235.0                                # Longitude minimum (degrees)
+   -  24.0                                # Latitude minimum (degrees)
+   -   1.0                                # Altitude minimum (km)
+   - 294.0                                # Longitude maximum (degrees)
+   -  50.0                                # Latitude maximum (degrees)
+   -  22.0                                # Altitude maximum (km)
+  tdelta                   : 60           # Output time resolution
+  dt                       : 10           # Two-way time window to serach for files
+  gzip                     :  5           # Default gzip compression level
+  gfs_forecast_ncdf        : /csrpb5/GFS/forecast/netcdf
+  gfs_forecast_trop_ncdf   : /csrpb5/GFS/forecast_trop/netcdf
+  gfs_analysis_ncdf        : /csrpb5/GFS/analysis/netcdf
+  gfs_analysis_trop_ncdf   : /csrpb5/GFS/analysis_trop/netcdf
+  traj3d_gfs_root          : /csrpb5/TRAJ3D
+  traj3d_gfs_winds         : /csrpb5/TRAJ3D/winds
+  traj3d_gfs_global        : /csrpb5/TRAJ3D/dcotss_global
+  traj3d_gfs_ot            : /csrpb5/TRAJ3D/dcotss_ot
+  nexrad_gfw_national      : /csrpa1/NEXRAD/national.gfw
+  nexrad_gfs_echo_top_root : /csrpd3/NEXRAD_DCOTSS
+  nexrad_level3_root       : /csrpd3/NEXRAD
+  nexrad_level3_directory  : /csrpd3/NEXRAD/level3
+  nexrad_level2_root       : /stir1/NEXRAD/level2
+  nexrad_level2_tmp_root   : /s3/NEXRAD/tmp
+  nexrad_log_file_root     : Projects/NEXRAD/composites/logs
+  noaa_wct_export          : /usr/local/wct-4.3.1/wct-export
+  noaa_wct_batch_config    : 
+
+##########################################################################
+#
+# This section defines global attributes for the level3 netCDF files
+global_atts:
+  Name                    : 'GridRad'
+  Description             : 'Three-dimensional gridded NEXRAD radar reflectivity data'
+  Analysis_time_window    : 'all azimuth scans (elevation angles) with central times within +/-3.8 minutes of analysis time'
+  Algorithm_description   : 'Space and time binning weighted by distances from contributing radars'
+  Grid_scheme             : 'regular longitude-latitude-altitude'
+  Storage_scheme          : 'netCDF-4, sparse'
+  Data_source             : 'National Oceanic and Atmospheric Administration, National Centers for Environmental Information'
+  Data_source_URL         : 'https://www.ncdc.noaa.gov/data-access/radar-data/nexrad'
+  Authors                 : 'Kenneth P. Bowman, Department of Atmospheric Sciences, Texas A&M University, College Station, TX 77843-3150, k-bowman@tamu.edu; Cameron R. Homeyer, School of Meteorology, University of Oklahoma, Norman, OK 73072-7307, chomeyer@ou.edu'
+  Project_sponsor         : 'National Science Foundation, Atmospheric and Geospace Sciences (AGS), Atmosphere Section, Physical and Dynamical Meteorology Program'
+  Project_name            : 'AGS-1522906 and 1522910; Collaborative Research: Observational and Modeling Studies of Overshooting Convection and Stratosphere-Troposphere Exchange'
+
+##########################################################################
+#
+# This section defines the location of NEXRAD Level2 data by date range
+level2_archive:
+  /csrpb5:          # The root location of the data
+    - 19910101      # The starting date of data at this location; YYYYMMDD
+    - 20031231      # The ending date of data at this location; YYYYMMDD
+  /csrpd1:
+    - 20040101
+    - 20110430
+  /csrpd2:
+    - 20110501
+    - 20130930
+  /csrpb1:
+    - 20131001
+    - 20150331
+  /csrpb2:
+    - 20150401
+    - 20160531
+  /csrpb3:
+    - 20150601
+    - 20170630
+  /csrpb4:
+    - 20170101
+    - 20180731
+  /csrpc1:
+    - 20180801
+    - 20190930
+  /csrpc2:
+    - 20191001
+    - 20201231

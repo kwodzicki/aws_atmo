@@ -1,0 +1,47 @@
+#!/usr/bin/env python3
+
+
+if __name__ == "__main__":
+  import argparse
+  from datetime import datetime  
+  from aws_atmo import CONSOLE 
+  from aws_atmo.nwp import gfs, GFS_DEFAULTS
+
+  parser = argparse.ArgumentParser( description = 'Download GFS model runs from AWS',
+    formatter_class=argparse.ArgumentDefaultsHelpFormatter )
+  parser.add_argument( 'outdir',                  type = str,                                        help = 'Directory to store files')
+  parser.add_argument( '-P', '--path', nargs='+', type = str,    default=GFS_DEFAULTS['outPathFMT'], help = 'Format string(s) for data storage path. These directories will be added to outdir')
+  parser.add_argument( '-F', '--file',            type = str,    default=GFS_DEFAULTS['outFileFMT'], help = 'Format string for data file')
+  parser.add_argument( '-d', '--domain',          type = str,    default=GFS_DEFAULTS['domain'],     help = 'Model "domain"; either atmos or wave')
+  parser.add_argument( '--fcstlen',               type = int,    default=GFS_DEFAULTS['fcstlen'],    help = 'How many forecast hours to download')
+  parser.add_argument( '--fcststep',              type = int,    default=GFS_DEFAULTS['fcststep'],   help = 'Hours between forecasts to download')
+  parser.add_argument( '--initstep',              type = int,    default=GFS_DEFAULTS['initstep'],   help = 'Hours between forecast initializations')
+  parser.add_argument( '--resolution',            type = float,  default=GFS_DEFAULTS['resolution'], help = 'Resolution of the model; in degrees' )
+  parser.add_argument( '-sd', '--startdate',      type = str,                                        help = 'ISO date string for starting model initalize date; YYYYmmddTHH')
+  parser.add_argument( '-ed', '--enddate',        type = str,                                        help = 'ISO date string for ending model initalize date; YYYYmmddTHH')
+  parser.add_argument( '--threads',               type = int,    default= 4,                         help = 'Number of simultaneous downloads to allow' )
+  parser.add_argument( '--log-level',             type = int,    default=30,                         help = 'Set logging level; lower numbers mean more verbose')
+  parser.add_argument( '--clobber', action='store_true',                                             help = 'If set, will overwrite existing files')
+
+  args = parser.parse_args()
+
+  if isinstance(args.startdate, str):
+    args.startdate = datetime.strptime( args.startdate, '%Y%m%dT%H' ) 
+  if isinstance(args.enddate, str):
+    args.enddate = datetime.strptime( args.enddate, '%Y%m%dT%H' ) 
+
+  CONSOLE.setLevel( args.log_level )
+
+  gfs( args.outdir, 
+    outPathFMT = args.path,
+    outFileFMT = args.file,
+    domain     = args.domain,
+    fcstlen    = args.fcstlen,
+    fcststep   = args.fcststep,
+    initstep   = args.initstep,
+    resolution = args.resolution,
+    date1      = args.startdate,
+    date2      = args.enddate,
+    concurrency= args.threads,
+    clobber    = args.clobber)
+

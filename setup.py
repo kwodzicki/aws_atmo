@@ -14,7 +14,7 @@ setuptools.setup(
   author_email         = "krwodzicki@gmail.com",
   version              = main_ns['__version__'],
   packages             = setuptools.find_packages(),
-  install_requires     = [ "boto3"],
+  install_requires     = [ "boto3", "pyyaml"],
   include_package_data = True,
    package_data        = {"" : ["data/*.xml", "data/*.txt", "data/*.json", "data/*.yml"]},
   scripts              = ["bin/aws_gfs_download",

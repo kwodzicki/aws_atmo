@@ -71,10 +71,13 @@ logFormatter = logging.Formatter(
 LOG = logging.getLogger(__name__)                                               # Get logger with same name as package
 LOG.setLevel( logging.DEBUG )                                                   # Set root log level to debug
 
-CONSOLE = logging.StreamHandler()
-CONSOLE.setFormatter( logFormatter )
-CONSOLE.setLevel( logging.WARNING )
-LOG.addHandler( CONSOLE )
+def consoleLogger():
+  console = logging.StreamHandler()
+  console.setFormatter( logFormatter )
+  console.setLevel( logging.WARNING )
+  LOG.addHandler( console )
+
+  return console
 
 # Define data directory for package
 DATADIR = os.path.join( os.path.dirname(__file__), 'data' )

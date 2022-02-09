@@ -67,7 +67,7 @@ class NEXRAD_AWS_Scheduler( AWS_Scheduler ):
         # failed downloads, and total size of all downloaded files.
     """
     
-    self.t0  = time.time()
+    super().download()
 
     if not isinstance( station, (list,tuple,) ): station = [station]                    # If stations is not an iterable, assume is string and make iterable
 
@@ -105,8 +105,7 @@ class NEXRAD_AWS_Scheduler( AWS_Scheduler ):
           if (fDate >= date0) and (fDate <= date1):                                     # If the date/time of the file is within the date0 -- date1 range
             self.log.debug( f'File : {statKey.key}; date : {fDate }' )
             localFile = os.path.join(stationdir[i], fBase)                              # Create local file path
-            #files.append( (statKey.key, statKey.size, localFile,) )
-            info = (station[i], statKey.key, statKey.size, localFile,)
+            info = (station[i], statKey.key, localFile, None)                           # Order is ( label for download stats, statKey for S3 object, local file to download to, offsets into file if downloading chunks )
  
             while not self.killEvent.is_set():                                          # If the killEvent is set, then return from method; we don't want to put anything else into the queue
               try:

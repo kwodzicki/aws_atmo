@@ -5,19 +5,18 @@ if __name__ == "__main__":
   import argparse
   from datetime import datetime  
   from aws_atmo import consoleLogger
-  from aws_atmo.nwp.gfs import gfs, GFS_DEFAULTS
+  from aws_atmo.nwp.hrrr import hrrr, HRRR_DEFAULTS
 
   parser = argparse.ArgumentParser( description = 'Download GFS model runs from AWS',
     formatter_class=argparse.ArgumentDefaultsHelpFormatter )
   parser.add_argument( 'outdir',                  type = str,                                        help = 'Directory to store files')
-  parser.add_argument( '-P', '--path', nargs='+', type = str,    default=GFS_DEFAULTS['outPathFMT'], help = 'Format string(s) for data storage path. These directories will be added to outdir')
-  parser.add_argument( '-F', '--file',            type = str,    default=GFS_DEFAULTS['outFileFMT'], help = 'Format string for data file')
-  parser.add_argument( '-d', '--domain',          type = str,    default=GFS_DEFAULTS['domain'],     help = 'Model "domain"; either atmos or wave')
+  parser.add_argument( '-P', '--path', nargs='+', type = str,    default=HRRR_DEFAULTS['outPathFMT'], help = 'Format string(s) for data storage path. These directories will be added to outdir')
+  parser.add_argument( '-F', '--file',            type = str,    default=HRRR_DEFAULTS['outFileFMT'], help = 'Format string for data file')
+  parser.add_argument( '-d', '--domain',          type = str,    default=HRRR_DEFAULTS['domain'],     help = 'Model "domain"; either atmos or wave')
   parser.add_argument( '-s', '--subset',          type = str,    nargs='*',                          help = 'Used to filter the variables to be downloaded. Any number of patterns to match to grib records in the idx file for downloading.')
-  parser.add_argument( '--fcstlen',               type = int,    default=GFS_DEFAULTS['fcstlen'],    help = 'How many forecast hours to download')
-  parser.add_argument( '--fcststep',              type = int,    default=GFS_DEFAULTS['fcststep'],   help = 'Hours between forecasts to download')
-  parser.add_argument( '--initstep',              type = int,    default=GFS_DEFAULTS['initstep'],   help = 'Hours between forecast initializations')
-  parser.add_argument( '--resolution',            type = float,  default=GFS_DEFAULTS['resolution'], help = 'Resolution of the model; in degrees' )
+  parser.add_argument( '--fcstlen',               type = int,    default=HRRR_DEFAULTS['fcstlen'],    help = 'How many forecast hours to download')
+  parser.add_argument( '--fcststep',              type = int,    default=HRRR_DEFAULTS['fcststep'],   help = 'Hours between forecasts to download')
+  parser.add_argument( '--initstep',              type = int,    default=HRRR_DEFAULTS['initstep'],   help = 'Hours between forecast initializations')
   parser.add_argument( '-sd', '--startdate',      type = str,                                        help = 'ISO date string for starting model initalize date; YYYYmmddTHH')
   parser.add_argument( '-ed', '--enddate',        type = str,                                        help = 'ISO date string for ending model initalize date; YYYYmmddTHH')
   parser.add_argument( '-j', '--jobs',            type = int,    default= 4,                         help = 'Number of simultaneous downloads to allow' )
@@ -34,7 +33,7 @@ if __name__ == "__main__":
   console = consoleLogger()
   console.setLevel( args.log_level )
 
-  gfs( args.outdir, 
+  hrrr( args.outdir, 
     subset     = args.subset,
     outPathFMT = args.path,
     outFileFMT = args.file,
@@ -42,7 +41,6 @@ if __name__ == "__main__":
     fcstlen    = args.fcstlen,
     fcststep   = args.fcststep,
     initstep   = args.initstep,
-    resolution = args.resolution,
     date1      = args.startdate,
     date2      = args.enddate,
     jobs       = args.jobs,

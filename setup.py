@@ -17,6 +17,7 @@ setuptools.setup(
   install_requires     = [ "boto3"],
   include_package_data = True,
    package_data        = {"" : ["data/*.xml", "data/*.txt", "data/*.json", "data/*.yml"]},
-  scripts              = ["bin/aws_gfs_download"],
+  scripts              = ["bin/aws_gfs_download",
+                          "bin/aws_hrrr_download"],
   zip_safe             = False,
 )
